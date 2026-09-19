@@ -3,11 +3,8 @@
 
 use core::panic::PanicInfo;
 
-use limine::{
-    RequestsEndMarker,
-    RequestsStartMarker,
-};
 use limine::request::FramebufferRequest;
+use limine::{RequestsEndMarker, RequestsStartMarker};
 
 #[used]
 #[unsafe(link_section = ".requests")]
@@ -27,12 +24,13 @@ fn panic(_info: &PanicInfo) -> ! {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn kmain() -> ! {
+pub extern "C" fn _start() -> ! {
     let response = FRAMEBUFFER_REQUEST
         .response()
         .expect("Framebuffer request failed");
 
-    let framebuffer = response.framebuffers()
+    let framebuffer = response
+        .framebuffers()
         .first()
         .expect("No framebuffer available");
 
